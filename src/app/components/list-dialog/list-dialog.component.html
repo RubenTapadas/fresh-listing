@@ -1,0 +1,26 @@
+<div class="dialog" *ngIf="mode">
+  <div class="title">
+    <input matInput [(ngModel)]="data.name" />
+  </div>
+  <div class="fields">
+    <div class="field-listing">
+      <div *ngFor="let item of data.fields">
+        <input
+          matInput
+          (change)="changeField(item.id, $event.target.value)"
+          [value]="item.label"
+          [disabled]="item.disable"
+        />
+      </div>
+    </div>
+    <div class="field-create" (click)="createField()">New Field</div>
+  </div>
+  <div class="actions">
+    <div *ngIf="mode === 'create'" class="create" (click)="create()">
+      Create
+    </div>
+    <div *ngIf="mode === 'edit'" class="edit" (click)="edit()">Edit</div>
+    <div *ngIf="mode === 'edit'" class="delete" (click)="erase()">Delete</div>
+    <div class="cancel" (click)="cancel()">Cancel</div>
+  </div>
+</div>

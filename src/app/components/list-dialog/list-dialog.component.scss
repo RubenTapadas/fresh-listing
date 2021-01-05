@@ -1,0 +1,83 @@
+.dialog {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr 30px;
+}
+
+.title input {
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 600;
+  background-color: transparent;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row-reverse;
+
+  div {
+    color: #fff;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 3px;
+    transition-duration: 0.2s;
+
+    &.cancel {
+      background-color: #9e9e9e;
+    }
+
+    &.delete {
+      background-color: #e64a19;
+    }
+
+    &.create,
+    &.edit {
+      background-color: #388e3c;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.fields {
+  padding: 10px 0 20px 0;
+
+  input {
+    width: 100%;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.2);
+
+    &[disabled] {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.field-create {
+  width: 100%;
+  color: #fff;
+  cursor: pointer;
+  padding: 4px;
+  text-align: center;
+  border-radius: 3px;
+  background-color: #0288d1;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.field-listing {
+  height: 200px;
+  display: grid;
+  grid-gap: 10px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  grid-template-columns: 1fr 1fr;
+}

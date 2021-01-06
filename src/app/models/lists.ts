@@ -2,7 +2,7 @@ export interface List {
   id: number;
   name: string;
   fields: Field[];
-  entries: any;
+  entries: any[];
   updateMoment?: number;
 }
 

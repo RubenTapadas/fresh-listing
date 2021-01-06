@@ -64,4 +64,111 @@
 
 .content {
   background-color: #212121;
+  grid-template-rows: auto 1fr;
+}
+
+.card-container {
+  display: grid;
+  grid-gap: 10px;
+  padding: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+  .create-card {
+    cursor: pointer;
+  }
+
+  .card {
+    width: 200px;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.4);
+
+    .plus-icon {
+      top: calc(50% - 50px);
+      left: calc(50% - 50px);
+      width: 95px;
+      height: 95px;
+      position: absolute;
+
+      mat-icon {
+        color: #212121;
+        font-size: 7em;
+      }
+    }
+
+    img {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      object-fit: cover;
+    }
+
+    .entry-edit {
+      top: 0;
+      right: 0;
+      color: #fff;
+      cursor: pointer;
+      opacity: 0;
+      z-index: 3;
+      padding: 6px;
+      position: absolute;
+      text-shadow: 0 0 5px #000;
+      transition-duration: 0.2s;
+    }
+
+    &:hover .entry-edit {
+      opacity: 1;
+    }
+  }
+
+  .card-from-list {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    z-index: 2;
+    position: relative;
+    grid-template-rows: 20px 1fr auto;
+
+    .card-name-holder {
+      position: relative;
+    }
+
+    .card-name {
+      top: 0;
+      left: 0;
+      display: inline;
+      padding: 2px 9px 2px 5px;
+      font-size: 1.3em;
+      position: absolute;
+      font-weight: 800;
+      border-radius: 0 0 11px 0;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .card-info {
+      display: grid;
+      padding: 5px;
+      padding-top: 100px;
+      background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 1)
+      );
+      grid-template-columns: 1fr 1fr;
+
+      div {
+        padding: 1px 5px;
+        font-weight: 800;
+      }
+    }
+  }
+}
+
+.filters {
+  padding: 20px 20px 0 20px;
 }

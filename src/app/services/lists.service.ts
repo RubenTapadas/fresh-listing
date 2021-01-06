@@ -15,7 +15,7 @@ export class ListsService {
       : []
   );
 
-  activeList$ = new BehaviorSubject<List | {}>({});
+  activeList$ = new BehaviorSubject<List>(null);
 
   newList(list: List) {
     const newList = {
@@ -48,15 +48,58 @@ export class ListsService {
   }
 
   eraseList(list: List) {
-    const lists = [
-      ...this.lists$.value.filter((l) => l.id !== list.id),
-    ].sort((a, b) => (a.updateMoment < b.updateMoment ? 1 : -1));
+    const lists = [...this.lists$.value.filter((l) => l.id !== list.id)];
 
     localStorage.setItem('lists', JSON.stringify(lists));
     this.lists$.next(lists);
   }
 
   updateActiveList(list: List) {
+    localStorage.setItem('activeListId', list.id + '');
     this.activeList$.next(list);
+  }
+
+  initialSetActiveList(listId: number) {
+    const targetList = this.lists$.value.find((l) => l.id === listId);
+    this.activeList$.next(targetList);
+  }
+
+  addEntry(list: List, entry: any) {
+    const filterList = this.lists$.value.filter((l) => l.id !== list.id);
+    list.entries = [...list.entries, entry];
+    const newLists = [...filterList, list];
+
+    localStorage.setItem('lists', JSON.stringify(newLists));
+    this.lists$.next(newLists);
+  }
+
+  editEntry(list: List, entry: any) {
+    const filterList = this.lists$.value.filter((l) => l.id !== list.id);
+    list.entries = [...list.entries.filter((e) => e.id !== entry.id), entry];
+    const newLists = [...filterList, list];
+
+    localStorage.setItem('lists', JSON.stringify(newLists));
+    this.lists$.next(newLists);
+  }
+
+  deleteEntry(list: List, entry: any) {
+    const filterList = this.lists$.value.filter((l) => l.id !== list.id);
+    list.entries = [...list.entries.filter((e) => e.id !== entry.id)];
+    const newLists = [...filterList, list];
+
+    localStorage.setItem('lists', JSON.stringify(newLists));
+    this.lists$.next(newLists);
+  }
+
+  changeOrder(fieldId: number, order: 'asc' | 'des') {
+    const activeList = this.activeList$.value;
+    const entries = activeList.entries.sort((a, b) => {
+      if (order === 'des') {
+        return a[fieldId] < b[fieldId] ? 1 : -1;
+      } else {
+        return a[fieldId] > b[fieldId] ? 1 : -1;
+      }
+    });
+    this.activeList$.next({ ...activeList, entries });
   }
 }

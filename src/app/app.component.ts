@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { BehaviorSubject, of } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { EntryDialogComponent } from './components/entry-dialog/entry-dialog.component';
 import { ListDialogComponent } from './components/list-dialog/list-dialog.component';
-import { List } from './models/lists';
+import { Field, List } from './models/lists';
 import { ListsService } from './services/lists.service';
 
 @Component({
@@ -10,12 +13,34 @@ import { ListsService } from './services/lists.service';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'fresh-listing';
 
   lists$ = this.listsService.lists$;
 
+  activeList$ = this.listsService.activeList$;
+  filterActiveList;
+
+  filters$ = new BehaviorSubject<any>({});
+
   constructor(private listsService: ListsService, private dialog: MatDialog) {}
+
+  ngOnInit() {
+    const activeListId = localStorage.getItem('activeListId');
+    if (activeListId) {
+      this.listsService.initialSetActiveList(parseInt(activeListId));
+    }
+
+    this.activeList$.subscribe((l) => {
+      this.filters$.next(
+        l.fields.map((f) => {
+          return { [f.label]: null };
+        })
+      );
+
+      this.filterActiveList = l;
+    });
+  }
 
   createList() {
     this.dialog.open(ListDialogComponent, {
@@ -29,6 +54,53 @@ export class AppComponent {
       width: '500px',
       disableClose: true,
       data: list,
+    });
+  }
+
+  openList(list) {
+    this.listsService.updateActiveList(list);
+  }
+
+  createEntry() {
+    this.activeList$.pipe(take(1)).subscribe((activeList) =>
+      this.dialog.open(EntryDialogComponent, {
+        width: '500px',
+        disableClose: true,
+        data: { list: activeList },
+      })
+    );
+  }
+
+  editEntry(entry) {
+    this.activeList$.pipe(take(1)).subscribe((activeList) =>
+      this.dialog.open(EntryDialogComponent, {
+        width: '500px',
+        disableClose: true,
+        data: { list: activeList, entry },
+      })
+    );
+  }
+
+  findField(fieldId: string, list: List) {
+    return list.fields.find((e) => e.id === parseInt(fieldId))?.label;
+  }
+
+  changeOrder(fieldId: number) {
+    this.listsService.changeOrder(fieldId, 'asc');
+  }
+
+  changeFilter(field: Field, value) {
+    this.activeList$.pipe(take(1)).subscribe((l: List) => {
+      const list = { ...l };
+      const entries =
+        !value || value === ''
+          ? list.entries
+          : list.entries.filter((e) =>
+              e[field.id]?.toLowerCase().includes(value.toLowerCase())
+            );
+
+      list.entries = entries;
+      this.filterActiveList = list;
     });
   }
 }

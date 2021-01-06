@@ -5,14 +5,87 @@
         <mat-icon>add</mat-icon>
         Create List
       </div>
-      <div *ngFor="let list of lists$ | async">
+      <div *ngFor="let list of lists$ | async" (click)="openList(list)">
         {{ list.name }}
         <div class="config" (click)="editList(list)">
           <mat-icon>settings</mat-icon>
         </div>
       </div>
     </div>
-    <div>Options</div>
+    <div></div>
   </div>
-  <div class="content"></div>
+  <div class="content">
+    <div class="filters">
+      <div *ngIf="activeList$ | async as activeList">
+        <mat-form-field appearance="fill">
+          <mat-label>Order By</mat-label>
+          <mat-select (selectionChange)="changeOrder($event.value)">
+            <mat-option
+              *ngFor="let field of activeList.fields"
+              [value]="field.id"
+              [style.display]="field.id === 1 ? 'none' : ''"
+            >
+              {{ field.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          appearance="fill"
+          *ngFor="let field of activeList.fields"
+          [style.display]="field.id === 1 ? 'none' : ''"
+        >
+          <mat-label>{{ field.label }}</mat-label>
+          <input
+            matInput
+            (change)="changeFilter(field, $event.target.value)"
+            [placeholder]="field.label"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="filterActiveList as activeList" class="card-container">
+      <div class="card create-card" (click)="createEntry()">
+        <div class="plus-icon"><mat-icon>add</mat-icon></div>
+      </div>
+
+      <div class="card" *ngFor="let entry of activeList.entries">
+        <div class="entry-edit" (click)="editEntry(entry)">
+          <mat-icon>settings</mat-icon>
+        </div>
+        <img [src]="entry['1']" />
+        <div class="card-from-list">
+          <div class="card-name-holder">
+            <div class="card-name" *ngIf="entry['2']">{{ entry["2"] }}</div>
+          </div>
+          <div></div>
+          <div class="card-info">
+            <div
+              *ngFor="let entryField of entry | keyvalue"
+              style="display: contents"
+            >
+              <div
+                *ngIf="
+                  entryField.key !== '1' &&
+                  entryField.key !== '2' &&
+                  entryField.key !== 'id'
+                "
+              >
+                {{ findField(entryField.key, activeList) }}
+              </div>
+              <div
+                *ngIf="
+                  entryField.key !== '1' &&
+                  entryField.key !== '2' &&
+                  entryField.key !== 'id'
+                "
+                style="text-align: right"
+              >
+                {{ entryField.value }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

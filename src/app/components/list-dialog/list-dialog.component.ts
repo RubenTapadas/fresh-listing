@@ -37,9 +37,9 @@ export class ListDialogComponent implements OnInit {
           name: '*New List*',
           fields: [
             { id: 1, label: 'Image', disable: true },
-            { id: 2, label: 'Name' },
+            { id: 2, label: 'Name', disable: true },
           ],
-          entries: {},
+          entries: [],
         };
         this.mode = 'create';
       } else {

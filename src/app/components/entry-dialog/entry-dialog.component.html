@@ -1,24 +1,23 @@
 <div class="dialog" *ngIf="mode">
   <div class="title">
-    <input matInput [(ngModel)]="data.name" />
+    <input matInput value="Edit Card" disabled />
   </div>
   <div class="fields">
     <div class="field-listing">
-      <div *ngFor="let item of data.fields">
+      <div *ngFor="let item of data.list.fields">
+        <h4>{{ item.label }}</h4>
         <input
+          *ngIf="mode === 'create'"
           matInput
-          (change)="changeField(item.id, $event.target.value)"
-          [value]="item.label"
-          [disabled]="item.disable"
+          (change)="updateField(item, $event.target.value)"
+        />
+        <input
+          *ngIf="mode === 'edit'"
+          matInput
+          (change)="updateField(item, $event.target.value)"
+          [value]="this.data.entry[item.id] ? this.data.entry[item.id] : ''"
         />
       </div>
-    </div>
-    <div
-      class="field-create"
-      (click)="createField()"
-      *ngIf="data.fields.length < 6"
-    >
-      New Field
     </div>
   </div>
   <div class="actions">

@@ -8,8 +8,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ListDialogComponent } from './components/list-dialog/list-dialog.component';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { EntryDialogComponent } from './components/entry-dialog/entry-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
-  declarations: [AppComponent, ListDialogComponent],
+  declarations: [AppComponent, ListDialogComponent, EntryDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -18,6 +20,7 @@ import { FormsModule } from '@angular/forms';
     MatDialogModule,
     MatInputModule,
     FormsModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

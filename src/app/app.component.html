@@ -1,3 +1,5 @@
+<div class="no-mobile">No Mobile <span>¯\_(ツ)_/¯</span></div>
+
 <div class="grid">
   <div class="side-nav">
     <div class="entries">
@@ -16,19 +18,27 @@
   </div>
   <div class="content">
     <div class="filters">
-      <div *ngIf="activeList$ | async as activeList">
-        <mat-form-field appearance="fill">
-          <mat-label>Order By</mat-label>
-          <mat-select (selectionChange)="changeOrder($event.value)">
-            <mat-option
-              *ngFor="let field of activeList.fields"
-              [value]="field.id"
-              [style.display]="field.id === 1 ? 'none' : ''"
-            >
-              {{ field.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div class="filters-inner" *ngIf="activeList$ | async as activeList">
+        <div class="has-order">
+          <mat-icon
+            class="click"
+            (click)="changeOrderDirection()"
+            [style.transform]="orderDirection === 'des' ? 'rotate(180deg)' : ''"
+            >arrow_drop_up</mat-icon
+          >
+          <mat-form-field appearance="fill">
+            <mat-label>Order By</mat-label>
+            <mat-select (selectionChange)="changeOrder($event.value)">
+              <mat-option
+                *ngFor="let field of activeList.fields"
+                [value]="field.id"
+                [style.display]="field.id === 1 ? 'none' : ''"
+              >
+                {{ field.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
         <mat-form-field
           appearance="fill"
           *ngFor="let field of activeList.fields"

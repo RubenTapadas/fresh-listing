@@ -172,3 +172,54 @@
 .filters {
   padding: 20px 20px 0 20px;
 }
+
+.filters-inner {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+  > * {
+    width: 200px;
+  }
+}
+
+.click {
+  cursor: pointer;
+}
+
+.has-order {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  mat-form-field {
+    width: 175px;
+  }
+  mat-icon {
+    margin-top: 16px;
+  }
+}
+
+.no-mobile {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  font-size: 3em;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  background-color: #212121;
+}
+
+@media only screen and (max-width: 1050px) {
+  .no-mobile {
+    display: flex;
+  }
+  .grid {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 410px) {
+  .no-mobile span {
+    display: none;
+  }
+}

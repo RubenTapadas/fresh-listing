@@ -30,7 +30,6 @@ export class ListDialogComponent implements OnInit {
           ? listsServiceLists.sort((a, b) => (a.id < b.id ? 1 : -1))[0].id + 1
           : null;
 
-      console.log({ listsServiceLists }, listsServiceLists.length === 0);
       if (!this.data) {
         this.data = {
           id: listsServiceLists.length !== 0 ? biggestId : 1,

@@ -23,6 +23,9 @@ export class AppComponent implements OnInit {
 
   filters$ = new BehaviorSubject<any>({});
 
+  orderDirection: 'asc' | 'des' = 'asc';
+  changeOrderValue: number;
+
   constructor(private listsService: ListsService, private dialog: MatDialog) {}
 
   ngOnInit() {
@@ -86,7 +89,8 @@ export class AppComponent implements OnInit {
   }
 
   changeOrder(fieldId: number) {
-    this.listsService.changeOrder(fieldId, 'asc');
+    this.changeOrderValue = fieldId;
+    this.listsService.changeOrder(fieldId, this.orderDirection);
   }
 
   changeFilter(field: Field, value) {
@@ -102,5 +106,15 @@ export class AppComponent implements OnInit {
       list.entries = entries;
       this.filterActiveList = list;
     });
+  }
+
+  changeOrderDirection() {
+    if (this.orderDirection === 'asc') {
+      this.orderDirection = 'des';
+    } else {
+      this.orderDirection = 'asc';
+    }
+
+    this.changeOrder(this.changeOrderValue);
   }
 }

@@ -53,44 +53,46 @@
         </mat-form-field>
       </div>
     </div>
-    <div *ngIf="filterActiveList as activeList" class="card-container">
-      <div class="card create-card" (click)="createEntry()">
-        <div class="plus-icon"><mat-icon>add</mat-icon></div>
-      </div>
-
-      <div class="card" *ngFor="let entry of activeList.entries">
-        <div class="entry-edit" (click)="editEntry(entry)">
-          <mat-icon>settings</mat-icon>
+    <div>
+      <div *ngIf="filterActiveList as activeList" class="card-container">
+        <div class="card create-card" (click)="createEntry()">
+          <div class="plus-icon"><mat-icon>add</mat-icon></div>
         </div>
-        <img [src]="entry['1']" />
-        <div class="card-from-list">
-          <div class="card-name-holder">
-            <div class="card-name" *ngIf="entry['2']">{{ entry["2"] }}</div>
+
+        <div class="card" *ngFor="let entry of activeList.entries">
+          <div class="entry-edit" (click)="editEntry(entry)">
+            <mat-icon>settings</mat-icon>
           </div>
-          <div></div>
-          <div class="card-info">
-            <div
-              *ngFor="let entryField of entry | keyvalue"
-              style="display: contents"
-            >
+          <img [src]="entry['1']" />
+          <div class="card-from-list">
+            <div class="card-name-holder">
+              <div class="card-name" *ngIf="entry['2']">{{ entry["2"] }}</div>
+            </div>
+            <div></div>
+            <div class="card-info">
               <div
-                *ngIf="
-                  entryField.key !== '1' &&
-                  entryField.key !== '2' &&
-                  entryField.key !== 'id'
-                "
+                *ngFor="let entryField of entry | keyvalue"
+                style="display: contents"
               >
-                {{ findField(entryField.key, activeList) }}
-              </div>
-              <div
-                *ngIf="
-                  entryField.key !== '1' &&
-                  entryField.key !== '2' &&
-                  entryField.key !== 'id'
-                "
-                style="text-align: right"
-              >
-                {{ entryField.value }}
+                <div
+                  *ngIf="
+                    entryField.key !== '1' &&
+                    entryField.key !== '2' &&
+                    entryField.key !== 'id'
+                  "
+                >
+                  {{ findField(entryField.key, activeList) }}
+                </div>
+                <div
+                  *ngIf="
+                    entryField.key !== '1' &&
+                    entryField.key !== '2' &&
+                    entryField.key !== 'id'
+                  "
+                  style="text-align: right"
+                >
+                  {{ entryField.value }}
+                </div>
               </div>
             </div>
           </div>

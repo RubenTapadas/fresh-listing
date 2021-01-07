@@ -7,12 +7,27 @@
       <div *ngFor="let item of data.list.fields">
         <h4>{{ item.label }}</h4>
         <input
-          *ngIf="mode === 'create'"
+          *ngIf="mode === 'create' && item.id !== 1"
+          matInput
+          (change)="updateField(item, $event.target.value)"
+          [formControl]="control"
+          [matAutocomplete]="auto"
+        />
+        <input
+          *ngIf="mode === 'create' && item.id === 1"
           matInput
           (change)="updateField(item, $event.target.value)"
         />
         <input
-          *ngIf="mode === 'edit'"
+          *ngIf="mode === 'edit' && item.id !== 1"
+          matInput
+          (change)="updateField(item, $event.target.value)"
+          [value]="this.data.entry[item.id] ? this.data.entry[item.id] : ''"
+          [formControl]="control"
+          [matAutocomplete]="auto"
+        />
+        <input
+          *ngIf="mode === 'edit' && item.id === 1"
           matInput
           (change)="updateField(item, $event.target.value)"
           [value]="this.data.entry[item.id] ? this.data.entry[item.id] : ''"
@@ -29,3 +44,12 @@
     <div class="cancel" (click)="cancel()">Cancel</div>
   </div>
 </div>
+
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option
+    *ngFor="let street of autocompleteEntry$ | async"
+    [value]="street"
+  >
+    {{ street }}
+  </mat-option>
+</mat-autocomplete>

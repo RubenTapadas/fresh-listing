@@ -1,5 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { List } from 'src/app/models/lists';
 import { ListsService } from 'src/app/services/lists.service';
 
@@ -10,6 +13,10 @@ import { ListsService } from 'src/app/services/lists.service';
 })
 export class EntryDialogComponent implements OnInit {
   mode: 'create' | 'edit';
+
+  control = new FormControl();
+  fieldvalues: string[];
+  autocompleteEntry$: Observable<string[]>;
 
   constructor(
     public dialogRef: MatDialogRef<EntryDialogComponent>,
@@ -23,6 +30,27 @@ export class EntryDialogComponent implements OnInit {
     } else {
       this.mode = 'edit';
     }
+
+    this.fieldvalues = this.data.list.entries
+      .map((e) => [e[2], e[3], e[4], e[5], e[6], e[7], e[8]])
+      .flat()
+      .filter((v) => v);
+
+    this.autocompleteEntry$ = this.control.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = this._normalizeValue(value);
+    return this.fieldvalues.filter((entry) =>
+      this._normalizeValue(entry).includes(filterValue)
+    );
+  }
+
+  private _normalizeValue(value: string): string {
+    return value.toLowerCase().replace(/\s/g, '');
   }
 
   findEntry(label: string) {

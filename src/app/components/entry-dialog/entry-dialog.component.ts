@@ -59,7 +59,7 @@ export class EntryDialogComponent implements OnInit {
   }
 
   updateAuto(value) {
-    this.autocompleteEntry$ = of(this._filter(value));
+    this.autocompleteEntry$ = of([...new Set(this._filter(value))]);
   }
 
   updateField(field, value) {

@@ -10,7 +10,7 @@
           *ngIf="mode === 'create' && item.id !== 1"
           matInput
           (change)="updateField(item, $event.target.value)"
-          [formControl]="control"
+          (keyup)="updateAuto($event.target.value)"
           [matAutocomplete]="auto"
         />
         <input
@@ -22,15 +22,19 @@
           *ngIf="mode === 'edit' && item.id !== 1"
           matInput
           (change)="updateField(item, $event.target.value)"
-          [value]="this.data.entry[item.id] ? this.data.entry[item.id] : ''"
-          [formControl]="control"
+          (keyup)="updateAuto($event.target.value)"
+          [value]="
+            this.data.entry[item.id] ? this.data.entry[item.id] : item.id + ''
+          "
           [matAutocomplete]="auto"
         />
         <input
           *ngIf="mode === 'edit' && item.id === 1"
           matInput
           (change)="updateField(item, $event.target.value)"
-          [value]="this.data.entry[item.id] ? this.data.entry[item.id] : ''"
+          [value]="
+            this.data.entry[item.id] ? this.data.entry[item.id] : item.id + ''
+          "
         />
       </div>
     </div>
@@ -47,7 +51,7 @@
 
 <mat-autocomplete #auto="matAutocomplete">
   <mat-option
-    *ngFor="let street of autocompleteEntry$ | async"
+    *ngFor="let street of autocompleteEntry$ | async | slice: 0:3"
     [value]="street"
   >
     {{ street }}

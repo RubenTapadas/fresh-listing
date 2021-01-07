@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
 import { List } from 'src/app/models/lists';
 import { ListsService } from 'src/app/services/lists.service';
 
@@ -31,15 +31,12 @@ export class EntryDialogComponent implements OnInit {
       this.mode = 'edit';
     }
 
+    console.log(this.mode, this.data.entry, this.data.list.fields);
+
     this.fieldvalues = this.data.list.entries
       .map((e) => [e[2], e[3], e[4], e[5], e[6], e[7], e[8]])
       .flat()
       .filter((v) => v);
-
-    this.autocompleteEntry$ = this.control.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value))
-    );
   }
 
   private _filter(value: string): string[] {
@@ -59,6 +56,10 @@ export class EntryDialogComponent implements OnInit {
     } else {
       return null;
     }
+  }
+
+  updateAuto(value) {
+    this.autocompleteEntry$ = of(this._filter(value));
   }
 
   updateField(field, value) {

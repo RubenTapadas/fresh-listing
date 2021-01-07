@@ -62,15 +62,27 @@ export class EntryDialogComponent implements OnInit {
   }
 
   create() {
-    if (this.data.entry) {
-      this.listsService.addEntry(this.data.list, this.data.entry);
-      this.dialogRef.close();
+    if (this.data.list.entries.find((e) => e['2'] === this.data.entry['2'])) {
+      window.alert('An entry with the same name already exists');
+    } else {
+      if (this.data.entry) {
+        this.listsService.addEntry(this.data.list, this.data.entry);
+        this.dialogRef.close();
+      }
     }
   }
 
   edit() {
-    this.listsService.editEntry(this.data.list, this.data.entry);
-    this.dialogRef.close();
+    if (
+      this.data.list.entries.find(
+        (e) => e['2'] === this.data.entry['2'] && e.id !== this.data.entry.id
+      )
+    ) {
+      window.alert('An entry with the same name already exists');
+    } else {
+      this.listsService.editEntry(this.data.list, this.data.entry);
+      this.dialogRef.close();
+    }
   }
 
   erase() {

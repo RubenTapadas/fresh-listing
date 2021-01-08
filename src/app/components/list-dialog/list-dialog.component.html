@@ -22,11 +22,22 @@
     </div>
   </div>
   <div class="actions">
-    <div *ngIf="mode === 'create'" class="create" (click)="create()">
-      Create
+    <div class="left">
+      <!-- <input type="file" value="Send Request" accept=".txt" (change)="handleFileInput($event.target.files)" />
+      <div *ngIf="mode === 'edit'" style="background-color: cadetblue">
+        Export
+      </div>
+      <div *ngIf="mode === 'create'" style="background-color: cadetblue">
+        Import
+      </div> -->
     </div>
-    <div *ngIf="mode === 'edit'" class="edit" (click)="edit()">Edit</div>
-    <div *ngIf="mode === 'edit'" class="delete" (click)="erase()">Delete</div>
-    <div class="cancel" (click)="cancel()">Cancel</div>
+    <div class="right">
+      <div *ngIf="mode === 'create'" class="create" (click)="create()">
+        Create
+      </div>
+      <div *ngIf="mode === 'edit'" class="edit" (click)="edit()">Edit</div>
+      <div *ngIf="mode === 'edit'" class="delete" (click)="erase()">Delete</div>
+      <div class="cancel" (click)="cancel()">Cancel</div>
+    </div>
   </div>
 </div>

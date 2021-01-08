@@ -9,8 +9,10 @@
         <input
           *ngIf="mode === 'create' && item.id !== 1"
           matInput
-          (change)="updateField(item, $event.target.value)"
-          (keyup)="updateAuto($event.target.value)"
+          (keyup)="
+            updateAuto($event.target.value);
+            updateField(item, $event.target.value)
+          "
           [matAutocomplete]="auto"
         />
         <input
@@ -21,8 +23,10 @@
         <input
           *ngIf="mode === 'edit' && item.id !== 1"
           matInput
-          (change)="updateField(item, $event.target.value)"
-          (keyup)="updateAuto($event.target.value)"
+          (keyup)="
+            updateAuto($event.target.value);
+            updateField(item, $event.target.value)
+          "
           [value]="
             this.data.entry[item.id] ? this.data.entry[item.id] : item.id + ''
           "
@@ -36,6 +40,15 @@
             this.data.entry[item.id] ? this.data.entry[item.id] : item.id + ''
           "
         />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let v of autocompleteEntry$ | async | slice: 0:3"
+            [value]="v"
+            (click)="updateField(item, v)"
+          >
+            {{ v }}
+          </mat-option>
+        </mat-autocomplete>
       </div>
     </div>
   </div>
@@ -48,12 +61,3 @@
     <div class="cancel" (click)="cancel()">Cancel</div>
   </div>
 </div>
-
-<mat-autocomplete #auto="matAutocomplete">
-  <mat-option
-    *ngFor="let street of autocompleteEntry$ | async | slice: 0:3"
-    [value]="street"
-  >
-    {{ street }}
-  </mat-option>
-</mat-autocomplete>

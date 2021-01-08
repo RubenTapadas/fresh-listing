@@ -5,6 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { List } from 'src/app/models/lists';
 import { ListsService } from 'src/app/services/lists.service';

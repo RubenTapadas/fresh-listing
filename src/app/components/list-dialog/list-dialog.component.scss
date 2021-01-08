@@ -13,16 +13,25 @@
 }
 
 .actions {
-  display: flex;
-  flex-direction: row-reverse;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  .right {
+    display: flex;
+    flex-direction: row-reverse;
+  }
 
-  div {
+  .right div,
+  .left div {
     color: #fff;
     cursor: pointer;
     padding: 5px 10px;
     margin-left: 10px;
     border-radius: 3px;
     transition-duration: 0.2s;
+
+    &:last-of-type {
+      margin-left: 0;
+    }
 
     &.cancel {
       background-color: #9e9e9e;

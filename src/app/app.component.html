@@ -7,7 +7,11 @@
         <mat-icon>add</mat-icon>
         Create List
       </div>
-      <div *ngFor="let list of lists$ | async" (click)="openList(list)">
+      <div
+        *ngFor="let list of lists$ | async"
+        (click)="openList(list)"
+        [ngClass]="{ active: (activeList$ | async)?.id === list.id }"
+      >
         {{ list.name }}
         <div class="config" (click)="editList(list)">
           <mat-icon>settings</mat-icon>

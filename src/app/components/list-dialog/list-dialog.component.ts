@@ -29,7 +29,8 @@ export class ListDialogComponent implements OnInit {
     this.listsService.lists$.pipe(take(1)).subscribe((listsServiceLists) => {
       const biggestId =
         listsServiceLists.length !== 0
-          ? listsServiceLists.sort((a, b) => (a.id < b.id ? 1 : -1))[0].id + 1
+          ? listsServiceLists.sort((a, b) => (a.name > b.name ? 1 : -1))[0].id +
+            1
           : null;
 
       if (!this.data) {

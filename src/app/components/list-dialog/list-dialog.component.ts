@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
 import { List } from 'src/app/models/lists';
 import { ListsService } from 'src/app/services/lists.service';
@@ -21,7 +21,8 @@ export class ListDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ListDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: List,
-    private listsService: ListsService
+    private listsService: ListsService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -97,5 +98,53 @@ export class ListDialogComponent implements OnInit {
       this.listsService.eraseList(this.data);
       this.dialogRef.close();
     }
+  }
+
+  handleFileInput(fileInput) {
+    const file = fileInput.files[0];
+    const filePath = fileInput.value;
+
+    const allowedExtension = /(\.txt)$/i;
+
+    if (allowedExtension.exec(filePath)) {
+      const fileReader = new FileReader();
+      fileReader.readAsText(file, 'UTF-8');
+      fileReader.onload = () => {
+        const result = JSON.parse(fileReader.result as any);
+        const checkType =
+          result.id &&
+          result.name &&
+          result.fields &&
+          result.entries &&
+          result.updateMoment;
+        if (checkType) {
+          this.listsService.newList({ ...result, id: this.data.id });
+          this.dialogRef.close();
+        } else {
+          window.alert('Incorrect file data');
+        }
+      };
+      fileReader.onerror = (error) => {
+        console.log(error);
+      };
+    } else {
+      window.alert('Incorrect file type');
+    }
+  }
+
+  handleFileOutput() {
+    let json = JSON.stringify(this.data);
+
+    const stringJson = [json];
+    var blob1 = new Blob(stringJson, { type: 'text/plain;charset=utf-8' });
+
+    var url = window.URL || window.webkitURL;
+    const link = url.createObjectURL(blob1);
+    var a = document.createElement('a');
+    a.download = this.data.name + '.txt';
+    a.href = link;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 }

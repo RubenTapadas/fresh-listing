@@ -7,3 +7,29 @@
 .mat-option.mat-active {
   background: #121212 !important;
 }
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  color: #fff;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transition-duration: 0.2s;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: red;
+}
+
+.inputfile + label {
+  cursor: pointer; /* "hand" cursor */
+}

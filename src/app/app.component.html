@@ -76,7 +76,7 @@
           <mat-label>{{ field.label }}</mat-label>
           <input
             matInput
-            (change)="changeFilter(field, $event.target.value)"
+            (keyup)="changeFilter(field, $event.target.value)"
             [placeholder]="field.label"
           />
         </mat-form-field>

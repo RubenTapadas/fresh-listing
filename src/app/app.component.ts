@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   orderDirection: 'asc' | 'des' = 'asc';
   changeOrderValue: number;
   navExpanded = 'opened';
+  filters = {};
 
   constructor(private listsService: ListsService, private dialog: MatDialog) {}
 
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
     }
 
     this.activeList$.subscribe((l) => {
+      console.log('sss');
       if (l) {
         this.filters$.next(
           l.fields.map((f) => {
@@ -92,22 +94,68 @@ export class AppComponent implements OnInit {
 
   changeOrder(fieldId: number) {
     this.changeOrderValue = fieldId;
-    this.listsService.changeOrder(fieldId, this.orderDirection);
+    this.applyFilters();
   }
 
   changeFilter(field: Field, value) {
-    this.activeList$.pipe(take(1)).subscribe((l: List) => {
-      const list = { ...l };
-      const entries =
-        !value || value === ''
-          ? list.entries
-          : list.entries.filter((e) =>
-              e[field.id]?.toLowerCase().includes(value.toLowerCase())
-            );
+    this.filters = {
+      ...this.filters,
+      [field.id]: value?.toLowerCase(),
+    };
 
-      list.entries = entries;
-      this.filterActiveList = list;
-    });
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    const filters = this.filters;
+    if (filters) {
+      this.activeList$.pipe(take(1)).subscribe((l: List) => {
+        const list = { ...l };
+
+        const entries = l.entries
+          .map((entry) => {
+            let allPassed = true;
+            l.fields.forEach((field) => {
+              const targetField = filters[field.id];
+              if (targetField && targetField !== '') {
+                const targetEntryField = entry[field.id]?.toLowerCase();
+                if (
+                  !targetEntryField ||
+                  !targetEntryField.includes(targetField.toLowerCase())
+                ) {
+                  allPassed = false;
+                }
+              }
+            });
+
+            return allPassed ? entry : null;
+          })
+          .filter((v) => v);
+
+        list.entries = entries;
+
+        const fieldId = this.changeOrderValue;
+        const order = this.orderDirection;
+
+        const sortedEntries = list.entries.sort((a, b) => {
+          if (parseInt(a[fieldId])) {
+            if (order === 'des') {
+              return parseInt(a[fieldId]) < parseInt(b[fieldId]) ? 1 : -1;
+            } else {
+              return parseInt(a[fieldId]) > parseInt(b[fieldId]) ? 1 : -1;
+            }
+          } else {
+            if (order === 'des') {
+              return a[fieldId] < b[fieldId] ? 1 : -1;
+            } else {
+              return a[fieldId] > b[fieldId] ? 1 : -1;
+            }
+          }
+        });
+
+        this.filterActiveList = { ...list, sortedEntries };
+      });
+    }
   }
 
   changeOrderDirection() {

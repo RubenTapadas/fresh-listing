@@ -94,24 +94,4 @@ export class ListsService {
     localStorage.setItem('lists', JSON.stringify(newLists));
     this.lists$.next(newLists);
   }
-
-  changeOrder(fieldId: number, order: 'asc' | 'des') {
-    const activeList = this.activeList$.value;
-    const entries = activeList.entries.sort((a, b) => {
-      if (parseInt(a[fieldId])) {
-        if (order === 'des') {
-          return parseInt(a[fieldId]) < parseInt(b[fieldId]) ? 1 : -1;
-        } else {
-          return parseInt(a[fieldId]) > parseInt(b[fieldId]) ? 1 : -1;
-        }
-      } else {
-        if (order === 'des') {
-          return a[fieldId] < b[fieldId] ? 1 : -1;
-        } else {
-          return a[fieldId] > b[fieldId] ? 1 : -1;
-        }
-      }
-    });
-    this.activeList$.next({ ...activeList, entries });
-  }
 }

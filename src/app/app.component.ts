@@ -138,7 +138,7 @@ export class AppComponent implements OnInit {
 
         list.entries = entries;
 
-        const fieldId = this.changeOrderValue;
+        const fieldId = this.changeOrderValue ?? '2';
         const order = this.orderDirection;
 
         const sortedEntries = list.entries.sort((a, b) => {

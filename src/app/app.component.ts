@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -18,11 +24,12 @@ export class AppComponent implements OnInit {
   lists$ = this.listsService.lists$;
   activeList$ = this.listsService.activeList$;
   filterActiveList;
-  filters$ = new BehaviorSubject<any>({});
   orderDirection: 'asc' | 'des' = 'asc';
   changeOrderValue: number;
   navExpanded = 'opened';
   filters = {};
+
+  @ViewChild('order') orderInput;
 
   constructor(private listsService: ListsService, private dialog: MatDialog) {}
 
@@ -38,13 +45,8 @@ export class AppComponent implements OnInit {
     this.activeList$.subscribe((l) => {
       console.log('sss');
       if (l) {
-        this.filters$.next(
-          l.fields.map((f) => {
-            return { [f.label]: null };
-          })
-        );
-
         this.filterActiveList = l;
+        this.applyFilters();
       }
     });
   }
@@ -65,6 +67,8 @@ export class AppComponent implements OnInit {
   }
 
   openList(list) {
+    this.orderInput.value = null;
+    this.filters = {};
     this.listsService.updateActiveList(list);
   }
 

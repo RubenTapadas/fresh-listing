@@ -47,7 +47,11 @@
   </div>
   <div class="content">
     <div class="filters">
-      <div class="filters-inner" *ngIf="activeList$ | async as activeList">
+      <form
+        #filterForm="ngForm"
+        class="filters-inner"
+        *ngIf="activeList$ | async as activeList"
+      >
         <div class="has-order">
           <mat-icon
             class="click"
@@ -57,7 +61,7 @@
           >
           <mat-form-field appearance="fill">
             <mat-label>Order By</mat-label>
-            <mat-select (selectionChange)="changeOrder($event.value)">
+            <mat-select (selectionChange)="changeOrder($event.value)" #order>
               <mat-option
                 *ngFor="let field of activeList.fields"
                 [value]="field.id"
@@ -80,7 +84,7 @@
             [placeholder]="field.label"
           />
         </mat-form-field>
-      </div>
+      </form>
     </div>
     <div *ngIf="activeList$ | async">
       <div *ngIf="filterActiveList as activeList" class="card-container">

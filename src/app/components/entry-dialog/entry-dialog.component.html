@@ -27,18 +27,14 @@
             updateAuto($event.target.value);
             updateField(item, $event.target.value)
           "
-          [value]="
-            this.data.entry[item.id] ? this.data.entry[item.id] : item.id + ''
-          "
+          [value]="this.data.entry[item.id] ? this.data.entry[item.id] : ''"
           [matAutocomplete]="auto"
         />
         <input
           *ngIf="mode === 'edit' && item.id === 1"
           matInput
           (change)="updateField(item, $event.target.value)"
-          [value]="
-            this.data.entry[item.id] ? this.data.entry[item.id] : item.id + ''
-          "
+          [value]="this.data.entry[item.id] ? this.data.entry[item.id] : ''"
         />
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option

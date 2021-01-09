@@ -27,11 +27,13 @@ export class ListDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.listsService.lists$.pipe(take(1)).subscribe((listsServiceLists) => {
+      const length = listsServiceLists.length;
       const biggestId =
-        listsServiceLists.length !== 0
-          ? listsServiceLists.sort((a, b) => (a.name > b.name ? 1 : -1))[0].id +
-            1
+        length !== 0
+          ? listsServiceLists.sort((a, b) => (a.id < b.id ? 1 : -1))[0].id + 1
           : null;
+
+      listsServiceLists.sort((a, b) => (a.name > b.name ? 1 : -1));
 
       if (!this.data) {
         this.data = {
@@ -143,6 +145,8 @@ export class ListDialogComponent implements OnInit {
           this.listsService.lists$.pipe(take(1)).subscribe((lists) => {
             const id = this.data.id;
             const name = this.noOverlapName(lists, result.name);
+
+            console.log({ id });
 
             this.listsService.newList({ ...result, id, name });
             this.dialogRef.close();

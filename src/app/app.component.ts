@@ -35,13 +35,15 @@ export class AppComponent implements OnInit {
     }
 
     this.activeList$.subscribe((l) => {
-      this.filters$.next(
-        l.fields.map((f) => {
-          return { [f.label]: null };
-        })
-      );
+      if (l) {
+        this.filters$.next(
+          l.fields.map((f) => {
+            return { [f.label]: null };
+          })
+        );
 
-      this.filterActiveList = l;
+        this.filterActiveList = l;
+      }
     });
   }
 
@@ -117,6 +119,4 @@ export class AppComponent implements OnInit {
 
     this.changeOrder(this.changeOrderValue);
   }
-
-  importList() {}
 }

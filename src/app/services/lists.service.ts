@@ -88,6 +88,10 @@ export class ListsService {
 
     localStorage.setItem('lists', JSON.stringify(newLists));
     this.lists$.next(newLists);
+
+    if (this.activeList$.value?.id === list.id) {
+      this.activeList$.next(list);
+    }
   }
 
   deleteEntry(list: List, entry: any) {
@@ -97,5 +101,9 @@ export class ListsService {
 
     localStorage.setItem('lists', JSON.stringify(newLists));
     this.lists$.next(newLists);
+
+    if (this.activeList$.value?.id === list.id) {
+      this.activeList$.next(list);
+    }
   }
 }

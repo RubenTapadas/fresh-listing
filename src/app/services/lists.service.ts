@@ -47,11 +47,15 @@ export class ListsService {
     this.lists$.next(lists);
   }
 
-  eraseList(list: List) {
+  eraseList(list: List, clearActiveList = true) {
     const lists = [...this.lists$.value.filter((l) => l.id !== list.id)];
 
     localStorage.setItem('lists', JSON.stringify(lists));
     this.lists$.next(lists);
+
+    if (clearActiveList) {
+      this.activeList$.next(null);
+    }
   }
 
   updateActiveList(list: List) {

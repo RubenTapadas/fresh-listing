@@ -100,6 +100,27 @@ export class ListDialogComponent implements OnInit {
     }
   }
 
+  noOverlapName(lists: List[], name: string): string {
+    let i = 0;
+    const names = lists.map((l) => l.name);
+
+    let resultName;
+
+    while (!resultName) {
+      const comparer = i === 0 ? name : name + '(' + i + ')';
+
+      console.log(resultName, names.includes(comparer), name);
+      if (names.includes(comparer)) {
+        name;
+        i++;
+      } else {
+        resultName = comparer;
+      }
+    }
+
+    return resultName;
+  }
+
   handleFileInput(fileInput) {
     const file = fileInput.files[0];
     const filePath = fileInput.value;
@@ -118,8 +139,13 @@ export class ListDialogComponent implements OnInit {
           result.entries &&
           result.updateMoment;
         if (checkType) {
-          this.listsService.newList({ ...result, id: this.data.id });
-          this.dialogRef.close();
+          this.listsService.lists$.pipe(take(1)).subscribe((lists) => {
+            const id = this.data.id;
+            const name = this.noOverlapName(lists, result.name);
+
+            this.listsService.newList({ ...result, id, name });
+            this.dialogRef.close();
+          });
         } else {
           window.alert('Incorrect file data');
         }

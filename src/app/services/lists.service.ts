@@ -10,7 +10,7 @@ export class ListsService {
   lists$ = new BehaviorSubject<List[]>(
     localStorage.getItem('lists')
       ? JSON.parse(localStorage.getItem('lists')).sort((a, b) =>
-          a.updateMoment < b.updateMoment ? 1 : -1
+          a.name > b.name ? 1 : -1
         )
       : []
   );
@@ -24,7 +24,7 @@ export class ListsService {
     };
 
     const lists = [...this.lists$.value, newList].sort((a, b) =>
-      a.updateMoment < b.updateMoment ? 1 : -1
+      a.name > b.name ? 1 : -1
     );
 
     localStorage.setItem('lists', JSON.stringify(lists));
@@ -41,7 +41,7 @@ export class ListsService {
     const lists = [
       ...this.lists$.value.filter((l) => l.id !== list.id),
       newList,
-    ].sort((a, b) => (a.updateMoment < b.updateMoment ? 1 : -1));
+    ].sort((a, b) => (a.name > b.name ? 1 : -1));
 
     localStorage.setItem('lists', JSON.stringify(lists));
     this.lists$.next(lists);

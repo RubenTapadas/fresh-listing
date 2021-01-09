@@ -15,20 +15,20 @@ import { ListsService } from './services/lists.service';
 })
 export class AppComponent implements OnInit {
   title = 'fresh-listing';
-
   lists$ = this.listsService.lists$;
-
   activeList$ = this.listsService.activeList$;
   filterActiveList;
-
   filters$ = new BehaviorSubject<any>({});
-
   orderDirection: 'asc' | 'des' = 'asc';
   changeOrderValue: number;
+  navExpanded = 'opened';
 
   constructor(private listsService: ListsService, private dialog: MatDialog) {}
 
   ngOnInit() {
+    const navExpanded = localStorage.getItem('navExpanded');
+    this.navExpanded = navExpanded != null ? navExpanded : 'opened';
+
     const activeListId = localStorage.getItem('activeListId');
     if (activeListId) {
       this.listsService.initialSetActiveList(parseInt(activeListId));
@@ -118,5 +118,18 @@ export class AppComponent implements OnInit {
     }
 
     this.changeOrder(this.changeOrderValue);
+  }
+
+  toggleSideBar() {
+    switch (this.navExpanded) {
+      case 'opened':
+        this.navExpanded = 'closed';
+        localStorage.setItem('navExpanded', 'closed');
+        break;
+      default:
+        this.navExpanded = 'opened';
+        localStorage.setItem('navExpanded', 'opened');
+        break;
+    }
   }
 }

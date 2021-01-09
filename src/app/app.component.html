@@ -1,6 +1,11 @@
 <div class="no-mobile">No Mobile <span>¯\_(ツ)_/¯</span></div>
 
-<div class="grid">
+<div
+  class="grid"
+  [ngClass]="{
+    'grid-closed': this.navExpanded === 'closed'
+  }"
+>
   <div class="side-nav">
     <div class="entries">
       <div class="create" (click)="createList()">
@@ -18,7 +23,27 @@
         </div>
       </div>
     </div>
-    <div></div>
+
+    <div class="buttons">
+      <div
+        class="nav-bar-expand-toggle toggle-outside"
+        [ngClass]="{
+          'nav-bar-expand-toggle-opened': this.navExpanded === 'opened'
+        }"
+        (click)="toggleSideBar()"
+      >
+        <mat-icon>play_arrow</mat-icon>
+      </div>
+      <div
+        class="nav-bar-expand-toggle toggle-inside"
+        (click)="toggleSideBar()"
+      >
+        <mat-icon>play_arrow</mat-icon>
+      </div>
+      <div>
+        <mat-icon>settings</mat-icon>
+      </div>
+    </div>
   </div>
   <div class="content">
     <div class="filters">

@@ -220,6 +220,7 @@
 .filters-inner {
   display: grid;
   grid-gap: 10px;
+  justify-items: center;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 
   > * {
@@ -275,17 +276,13 @@
   margin-right: 0px !important;
 }
 
-@media only screen and (max-width: 1050px) {
-  .no-mobile {
-    display: flex;
-  }
+@media only screen and (max-width: 800px) {
   .grid {
-    display: none;
-  }
-}
+    grid-template-columns: 100vw 100vw;
 
-@media only screen and (max-width: 410px) {
-  .no-mobile span {
-    display: none;
+    &.grid-closed {
+      grid-template-columns: 100vw 100vw;
+      margin-left: -100vw;
+    }
   }
 }

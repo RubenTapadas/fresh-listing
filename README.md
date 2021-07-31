@@ -1,6 +1,6 @@
 # Fresh Listing
 
-A simple app to create a card list.
+A simple app to create card lists.
 
 GitHub Pages: https://rubentapadas.github.io/fresh-listing/
 

@@ -67,7 +67,9 @@ export class AppComponent implements OnInit {
   }
 
   openList(list) {
-    this.orderInput.value = null;
+    if(this.orderInput){
+      this.orderInput.value = null;
+    }
     this.filters = {};
     this.listsService.updateActiveList(list);
   }

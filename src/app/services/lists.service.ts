@@ -60,6 +60,7 @@ export class ListsService {
 
   updateActiveList(list: List) {
     localStorage.setItem('activeListId', list.id + '');
+    console.log({list})
     this.activeList$.next(list);
   }
 
